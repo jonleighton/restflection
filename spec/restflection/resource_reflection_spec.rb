@@ -74,5 +74,23 @@ module Restflection
     end
 
   end
+
+  describe ResourceReflection, "with a name of 'cereal_box'" do
+
+    include SharedStubs
+
+    before do
+      @reflection = ResourceReflection.new(controller_stub, "cereal_box")
+    end
+
+    it "should return 'Cereal Box' when asked for the titleized name" do
+      @reflection.titleized_name.should == "Cereal Box"
+    end
+
+    it "should return 'cereal box' when asked for the human name" do
+      @reflection.human_name.should == "cereal box"
+    end
+  
+  end
   
 end

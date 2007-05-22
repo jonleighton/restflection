@@ -17,6 +17,14 @@ module Restflection
       @controller.instance_variable_set(instance_variable_name, resource)
     end
 
+    def human_name
+      name.humanize.downcase
+    end
+
+    def titleized_name
+      name.titleize
+    end
+
     URL_HELPER_FORMAT = /(?:hash_for_formatted|hash_for|formatted)_/
     URL_HELPER_ACTION = /.*?_/
     URL_HELPER_SUFFIX = /url|path/
