@@ -10,7 +10,13 @@ module Restflection
                else
                  raise ArgumentError, "You can only call restflect with :member or :collection"
              end
-      ResourceReflection.new(self, name)
+      reflection = ResourceReflection.new(self, name)
+      
+      if resource = ::ActionController::Resources.resources[controller_name]
+        reflection.name_prefix = resource.name_prefix
+      end
+
+      reflection
     end
     
   end

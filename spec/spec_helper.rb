@@ -1,5 +1,5 @@
-%w(spec).each { |r| require r }
-require File.dirname(__FILE__) + '/../lib/restflection'
+%w(rubygems spec).each { |r| require r }
+require File.expand_path(File.dirname(__FILE__) + '/../lib/restflection')
 
 Spec::Runner.configure do |config|
   config.mock_with :mocha

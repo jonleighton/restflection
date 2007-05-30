@@ -8,6 +8,7 @@ module Restflection
 
     before do
       controller_stub(:controller_name => "cars")
+      ActionController::Resources.stubs(:resource).returns("cars" => stub(:name_prefix => ""))
       (class << @controller; self; end).send :include, Restflect
     end
 
@@ -29,6 +30,28 @@ module Restflection
       @controller = nil
     end
   
+  end
+
+  describe Restflect, "when included in a DucksController which has a name prefix of 'quack'" do
+
+    include SharedStubs
+
+    before do
+      controller_stub(:controller_name => "ducks")
+      ::ActionController::Resources.stubs(:resources).returns("ducks" => stub(:name_prefix => "quack"))
+      (class << @controller; self; end).send :include, Restflect
+    end
+
+    it "should set the name prefix on the reflection" do
+      reflection_stub.expects(:name_prefix=).with("quack")
+      ResourceReflection.stubs(:new).with(@controller, "ducks").returns(@reflection)
+      @controller.restflect(:collection).should == @reflection
+    end
+
+    after do
+      @controller = nil
+    end
+
   end
 
 end
