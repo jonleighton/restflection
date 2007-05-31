@@ -10,7 +10,8 @@ module Restflection
     include SharedStubs
 
     before do
-      @reflection = ResourceReflection.new(controller_stub, "account")
+      @reflection = ResourceReflection.new(controller_stub(:controller_name => "accounts"), "account")
+      ::ActionController::Resources.stubs(:resources).returns("accounts" => stub(:member_methods => { :get => [ :edit ] }))
     end
 
     it "should have an empty name prefix" do
@@ -51,7 +52,25 @@ module Restflection
       @reflection.formatted_new_path
     end
 
-    it "should automatically pass the resource to member methods"
+    it "should automatically pass the resource to specific member actions if not passed any arguments" do
+      account = stub
+      @reflection.expects(:it).returns(account)
+      @controller.expects(:edit_account_path).with(account)
+      @reflection.edit_path
+    end
+
+    it "should automatically pass the resource to the 'show' action if not passed any arguments" do
+      account = stub
+      @reflection.expects(:it).returns(account)
+      @controller.expects(:account_path).with(account)
+      @reflection.path
+    end
+
+    it "should pass the arguments straight to member methods if given" do
+      arguments = [stub, stub]
+      @controller.expects(:edit_account_path).with(*arguments)
+      @reflection.edit_path(*arguments)
+    end
 
     it "should raise a NoMethodError if the method does not match" do
       lambda { @reflection.every_man_is_an_island }.should raise_error(NoMethodError, "undefined method 'every_man_is_an_island'")
@@ -68,7 +87,8 @@ module Restflection
     include SharedStubs
 
     before do
-      @reflection = ResourceReflection.new(controller_stub, "comment")
+      @reflection = ResourceReflection.new(controller_stub(:controller_name => "comments"), "comment")
+      ::ActionController::Resources.stubs(:resources).returns("comments" => stub(:member_methods => { :get => [ :edit ] }))
       @reflection.name_prefix = "article_"
     end
 
