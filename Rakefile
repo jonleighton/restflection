@@ -8,7 +8,7 @@ require 'spec/rake/spectask'
 
 desc "Run specs"
 Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = %w(-f specdoc)
+  t.spec_opts = %w(-f specdoc -c)
 end
 
 desc "Run specs with Heckle"

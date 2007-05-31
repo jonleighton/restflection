@@ -1,5 +1,8 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
+Speaker = Class.new
+Account = Class.new
+
 module Restflection
   
   describe ResourceReflection, "with a name of 'account' and an unspecified name prefix" do
@@ -47,6 +50,16 @@ module Restflection
       @controller.expects(:formatted_new_account_path)
       @reflection.formatted_new_path
     end
+
+    it "should automatically pass the resource to member methods"
+
+    it "should raise a NoMethodError if the method does not match" do
+      lambda { @reflection.every_man_is_an_island }.should raise_error(NoMethodError, "undefined method 'every_man_is_an_island'")
+    end
+
+    it "should return Account when asked for klass" do
+      @reflection.klass.should == Account
+    end
     
   end
 
@@ -89,6 +102,20 @@ module Restflection
 
     it "should return 'cereal box' when asked for the human name" do
       @reflection.human_name.should == "cereal box"
+    end
+  
+  end
+
+  describe ResourceReflection, "with a name of 'speakers'" do
+
+    include SharedStubs
+
+    before do
+      @reflection = ResourceReflection.new(controller_stub, "speakers")
+    end
+
+    it "should return Speaker when asked for klass" do
+      @reflection.klass.should == Speaker
     end
   
   end

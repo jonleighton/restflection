@@ -25,6 +25,14 @@ module Restflection
       name.titleize
     end
 
+    def instance_variable_name
+      "@#{name}"
+    end
+
+    def klass
+      name.singularize.classify.constantize
+    end
+
     URL_HELPER_FORMAT = /(?:hash_for_formatted|hash_for|formatted)_/
     URL_HELPER_ACTION = /.*?_/
     URL_HELPER_SUFFIX = /url|path/
@@ -32,14 +40,14 @@ module Restflection
     URL_HELPER = /\A(#{URL_HELPER_FORMAT})?(#{URL_HELPER_ACTION})?(#{URL_HELPER_SUFFIX})\Z/
     
     def method_missing(method_name, *args)
-      parts = []
-      3.times { |i| parts << method_name.to_s.sub(URL_HELPER, "\\#{i + 1}") }
-      url_helper = parts[0] + name_prefix + parts[1] + name + "_" + parts[2]
-      @controller.send(url_helper, *args)
-    end
-
-    def instance_variable_name
-      "@#{name}"
+      if method_name.to_s =~ URL_HELPER
+        parts = []
+        3.times { |i| parts << method_name.to_s.sub(URL_HELPER, "\\#{i + 1}") }
+        url_helper = parts[0] + name_prefix + parts[1] + name + "_" + parts[2]
+        @controller.send(url_helper, *args)
+      else
+        raise NoMethodError.new("undefined method '#{method_name}'", method_name, args)
+      end
     end
     
   end
