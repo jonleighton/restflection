@@ -1,0 +1,8 @@
+Restflection is a Ruby on Rails plugin designed for use in
+applications which followRESTful conventions. It allows you
+to extract information about resources without necessarily
+knowing what they are called.
+
+For more info and documentation please go to:
+
+http://jonathanleighton.com/projects/restflection
