@@ -1,7 +1,7 @@
 STATUS
 ======
 
-This is now kind of obsoleted by the accepts_nested_attributes feature built into Active Record. (Though I do hate that they are putting logic for munging HTTP params in the model.)
+I kinda hate the API I invented here. Maybe a derivative would be useful in the future. Note that inherited_resources has a similar thing (refer to "@post" as "resource" in your PostsController), but that only works if you're using ir, and even then only for controllers which are using ir.
 
 DESCRIPTION
 ===========
