@@ -1,3 +1,11 @@
+STATUS
+======
+
+This is now kind of obsoleted by the accepts_nested_attributes feature built into Active Record. (Though I do hate that they are putting logic for munging HTTP params in the model.)
+
+DESCRIPTION
+===========
+
 Restflection is a Ruby on Rails plugin designed for use in
 applications which followRESTful conventions. It allows you
 to extract information about resources without necessarily
